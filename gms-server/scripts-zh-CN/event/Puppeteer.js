@@ -14,8 +14,15 @@ function setup(difficulty, lobbyId) {
     eim.getInstanceMap(eventMap).resetFully();
     eim.getInstanceMap(eventMap).allowSummonState(false);
     respawn(eim);
+    //spawnMonster(eim,eim.getInstanceMap(eventMap));  // by xzx
     eim.startEventTimer(eventTimer);
     return eim;
+}
+
+function spawnMonster(eim, map) {
+  var mob = em.getMonster(9300285);
+  eim.registerMonster(mob);
+  map.spawnMonsterOnGroundBelow(mob, new java.awt.Point(15,-181));//设置坐标x y
 }
 
 function afterSetup(eim) {}

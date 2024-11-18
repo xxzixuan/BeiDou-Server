@@ -120,7 +120,7 @@ function start()
  * @description 如果是sendSelectLevel，那么会根据玩家的选项自动路由到对应的level+selection方法
  */
 function levelStart() {
-    let text = "尊贵的GM大人，您想去哪里呢？\r\n";
+    let text = "你好 "+ cm.getName() +"！你想去哪里呢？\r\n";
     text += "#L0#BOSS地图#l\r\n";
     text += "#L1#练级地图#l\r\n";
     text += "#L2#城镇地图#l\r\n";

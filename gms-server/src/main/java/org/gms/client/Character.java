@@ -1,4 +1,4 @@
-/* 
+/*
  This file is part of the OdinMS Maple Story Server
  Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
  Matthias Butz <matze@odinms.de>
@@ -33,7 +33,6 @@ import org.gms.client.keybind.KeyBinding;
 import org.gms.client.keybind.QuickslotBinding;
 import org.gms.client.processor.action.PetAutopotProcessor;
 import org.gms.client.processor.npc.FredrickProcessor;
-import org.gms.config.GameConfig;
 import org.gms.config.GameConfig;
 import org.gms.constants.game.DelayedQuestUpdate;
 import org.gms.constants.game.ExpTable;
@@ -88,7 +87,6 @@ import org.gms.util.*;
 import org.gms.util.packets.WeddingPackets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.awt.*;
 import java.lang.ref.WeakReference;
 import java.sql.*;
@@ -1135,7 +1133,7 @@ public class Character extends AbstractCharacterObject {
             addhp += Randomizer.rand(300, 350);
             addmp += Randomizer.rand(150, 200);
         }
-        
+
         /*
         //aran perks?
         int newJobId = newJob.getId();
@@ -1219,7 +1217,7 @@ public class Character extends AbstractCharacterObject {
         if (guild != null) {
             guild.broadcast(packet, id);
         }
-        
+
         /*
         if(partnerid > 0) {
             partner.sendPacket(packet); not yet implemented
@@ -1744,6 +1742,25 @@ public class Character extends AbstractCharacterObject {
 
     public void changePage(int page) {
         this.currentPage = page;
+    }
+
+    public boolean hasSkill(int skillid) {
+        Skill theSkill = SkillFactory.getSkill(skillid);
+        if (theSkill != null) {
+            return getSkillLevel(theSkill) > 0;
+        }
+        return false;
+    }
+
+    public void teachSkillsCurrentJob() {
+    	List<Integer> skills = SkillFactory.getSkillsByJob(job.getId());
+    	if (Objects.isNull(skills)) {
+    		return;
+    	}
+    	skills.stream()
+    		.map(SkillFactory::getSkill)
+    		.filter(skil -> Objects.nonNull(skil) && !hasSkill(skil.getId()))
+    		.forEach(skil -> { changeSkillLevel(skil, (byte) 0, skil.getMaxLevel(), -1); });
     }
 
     public void changeSkillLevel(Skill skill, byte newLevel, int newMasterlevel, long expiration) {
@@ -2852,7 +2869,7 @@ public class Character extends AbstractCharacterObject {
             long leftover = 0;
             long nextExp = exp.get() + total;
 
-            if (nextExp > (long) Integer.MAX_VALUE) {
+            if (nextExp > Integer.MAX_VALUE) {
                 total = Integer.MAX_VALUE - exp.get();
                 leftover = nextExp - Integer.MAX_VALUE;
             }
@@ -2880,7 +2897,9 @@ public class Character extends AbstractCharacterObject {
                     updateSingleStat(Stat.EXP, 0);
                     break;
                 }
-                if (GameConfig.getServerBoolean("use_level_up_protect")) break;
+                if (GameConfig.getServerBoolean("use_level_up_protect")) {
+					break;
+				}
             }
 
             if (leftover > 0) {
@@ -4418,16 +4437,24 @@ public class Character extends AbstractCharacterObject {
     }
 
     public float getLevelExpRate() {
-        if (hasNoviceExpRate()) return 1; // 新手经验保护
+        if (hasNoviceExpRate())
+		 {
+			return 1; // 新手经验保护
+		}
 
         return 1f + GameConfig.getWorldFloat(getWorld(), "level_exp_rate") * level;
     }
 
     public float getQuickLevelExpRate() {
-        if (hasNoviceExpRate()) return 1; // 新手经验保护
+        if (hasNoviceExpRate())
+		 {
+			return 1; // 新手经验保护
+		}
 
         int quickLv = GameConfig.getWorldInt(getWorld(), "quick_level");
-        if (level >= quickLv) return 1;
+        if (level >= quickLv) {
+			return 1;
+		}
 
         return 1f + (quickLv - level) * GameConfig.getWorldFloat(getWorld(), "quick_level_exp_rate");
     }
@@ -4437,7 +4464,9 @@ public class Character extends AbstractCharacterObject {
     }
 
     public float getMobExpRate() {
-        if (mobExpRate <= 0) updateMobExpRate();
+        if (mobExpRate <= 0) {
+			updateMobExpRate();
+		}
         return mobExpRate;
     }
 
@@ -7927,8 +7956,8 @@ public class Character extends AbstractCharacterObject {
                 autoHpAlert = hpMpAlertService.getHpAlertPer(id);
                 autoMpAlert = hpMpAlertService.getMpAlertPer(id);
             } else {
-                autoHpAlert = (float) GameConfig.getServerFloat("pet_auto_hp_ratio");
-                autoMpAlert = (float) GameConfig.getServerFloat("pet_auto_mp_ratio");
+                autoHpAlert = GameConfig.getServerFloat("pet_auto_hp_ratio");
+                autoMpAlert = GameConfig.getServerFloat("pet_auto_mp_ratio");
             }
 
             if (hpchange < 0) {

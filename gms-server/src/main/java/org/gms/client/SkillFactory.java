@@ -82,12 +82,15 @@ import org.gms.provider.wz.WZFiles;
 import org.gms.server.StatEffect;
 import org.gms.server.life.Element;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SkillFactory {
     private static volatile Map<Integer, Skill> skills = new HashMap<>();
     private static final DataProvider datasource = DataProviderFactory.getDataProvider(WZFiles.SKILL);
+    private static final Map<Integer, List<Integer>> skillsByJob = new HashMap<Integer, List<Integer>>();
 
     public static Skill getSkill(int id) {
         return skills.get(id);
@@ -104,6 +107,12 @@ public class SkillFactory {
                             if (data2 != null) {
                                 int skillId = Integer.parseInt(data2.getName());
                                 loadedSkills.put(skillId, loadFromData(skillId, data2));
+                                List<Integer> job = skillsByJob.get(skillId / 10000);
+                                if (job == null) {
+                                    job = new ArrayList<>();
+                                    skillsByJob.put(skillId / 10000, job);
+                                }
+                                job.add(skillId);
                             }
                         }
                     }
@@ -382,6 +391,10 @@ public class SkillFactory {
             }
         }
         return ret;
+    }
+
+    public static List<Integer> getSkillsByJob(final int jobId) {
+        return skillsByJob.get(jobId);
     }
 
     public static String getSkillName(int skillid) {

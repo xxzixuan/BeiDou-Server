@@ -23,9 +23,11 @@
 /**
  * @description 拍卖行中心脚本
  */
+var LifeFactory = Java.type('org.gms.server.life.LifeFactory');
+
 var BeiDouUI ="#fMap/MapHelper.img/BeiDou/logo#";
 var BlueShine = "#fUI/GuildMark.img/Mark/Pattern/00004001/10#";
-var OldTitle ="\t\t\t\t\t#e欢迎来到#rBeiDou#k脚本中心#n\t\t\t\t\r\n";
+var OldTitle ="\t\t\t\t\t\t\t欢迎来到呆呆鹅冒险岛#n\t\t\t\t\r\n";
 var status = -1;
 var i = 0;
 function start() {
@@ -52,12 +54,18 @@ function action(mode, type, selection) {
 		//text +=BlueShine + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + BlueShine + "\r\n";
 		//text +=BlueShine + TextTitle + TextTitle + TextTitle + "\r\n\r\n";
 		let text = OldTitle;
-        text += "当前点券：" + cm.getPlayer().getCashShop().getCash(1) + "\r\n";
-        text += "当前抵用券：" + cm.getPlayer().getCashShop().getCash(2) + "\r\n";
-        text += "当前信用券：" + cm.getPlayer().getCashShop().getCash(4) + "\r\n";
+        text += "\t点券：" + cm.getPlayer().getCashShop().getCash(1) + "\r\n";
+        text += "抵用券：" + cm.getPlayer().getCashShop().getCash(2) + "\r\n";
+        text += "信用券：" + cm.getPlayer().getCashShop().getCash(4) + "\r\n";
         text += " \r\n\r\n";
-        text += "#L0#新人福利#l \t #L1#每日签到#l \t #L2#在线奖励#l\r\n";
-        text += "#L3#传送自由#l\r\n";
+        text += "#L0#萌新福利#l \t #L1#每日签到#l \t #L2#在线奖励#l\r\n";
+        text += "#L3#鹅鹅打车#l \t #L5#自由市场#l \t #L6#附近村落#l\r\n";
+		text += "#L7#战神学技#l\r\n";
+        
+        if (cm.getPlayer().getMap().getId() == '104000004' && cm.getPlayer().getJob() == 'ARAN2') {
+          text += "#L4#精准矛(补偿)#l\r\n";          
+        }
+        
         if (cm.getPlayer().isGM()) {
             text += "\r\n\r\n";
             text += "\t\t\t\t#r=====以下内容仅GM可见=====\r\n";
@@ -86,8 +94,22 @@ function doSelect(selection) {
             openNpc("在线奖励");
             break;
         case 3:
-            cm.getPlayer().saveLocation("FREE_MARKET");
-            cm.warp(910000000, "out00");
+            openNpc("万能传送");
+           //cm.getPlayer().saveLocation("FREE_MARKET");
+           // cm.warp(910000000, "out00");
+            break;
+        case 5:            
+            cm.warp(910000000, 0);
+            cm.dispose();
+            break; 
+        case 6:
+            cm.gainMeso(-5000);            
+            var returnMapId = cm.getMap().getReturnMap().getId();
+            cm.warp(returnMapId, 0);
+            cm.dispose();
+            break;
+		case 7:
+            openNpc("战神学技");
             break;
         // GM功能
         case 61:
@@ -117,6 +139,17 @@ function doSelect(selection) {
             break;
         case 68:
             openNpc("Example2")
+            break;
+        case 4:
+            var mobId = 9300345;
+            var level = cm.getLevel();
+            if (level > 37) {
+              mobId = 9300346;
+            }            
+            cm.getPlayer().getMap().spawnMonsterOnGroundBelow(LifeFactory.getMonster(mobId), cm.getPlayer().getPosition());
+            
+            cm.sendOk("已补偿！");
+            cm.dispose();
             break;
         default:
             cm.sendOk("该功能暂不支持，敬请期待！");
