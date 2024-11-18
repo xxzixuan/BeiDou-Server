@@ -1,12 +1,12 @@
 server:
-  port: 8686
+  port: 7676
 
 app:
   vue: http://localhost:8787
   
 jwt:
   # secret 生产环境请自行生成 UUID
-  secret: "50da066e-6080-40f5-a173-86bd27d4f674"
+  secret: "3b1e7add-69f3-4e89-a8da-12237a3bbb4e"
   # token 过期时间（毫秒）默认 30min
   duration: 1800000
 
@@ -26,20 +26,20 @@ springdoc:
   # 生产环境需要关闭这2个参数
   api-docs:
     # 是否开启OpenApi，如果为false，则SwaggerUI也会被禁用
-    enabled: true
+    enabled: false
   swagger-ui:
     # 是否开启SwaggerUI，依赖OpenApi的开启
-    enabled: true
+    enabled: false
 
 spring:
   flyway:
     # 禁用版本验证
     validate-on-migrate: false
-  servlet:
-    # 默认文件大小就是这里设置的，按需修改
-    multipart:
-      max-file-size: 1MB
-      max-request-size: 10MB
+  mvc:
+    static-path-pattern: /**
+  web:
+    resources:
+      static-locations: classpath:/static/
 
 gms:
   service:
@@ -55,7 +55,7 @@ gms:
       # 是否自动封禁
       auto-ban: false
     # 公网ip
-    wan-host: 127.0.0.1
+    wan-host: 111.229.19.58
     # 局域网ip
     lan-host: 127.0.0.1
     # 本地ip
