@@ -60,7 +60,7 @@ function action(mode, type, selection) {
         text += " \r\n\r\n";
         text += "#L0#萌新福利#l \t #L1#每日签到#l \t #L2#在线奖励#l\r\n";
         text += "#L3#鹅鹅打车#l \t #L5#自由市场#l \t #L6#附近村落#l\r\n";
-		text += "#L7#战神学技#l\r\n";
+		text += "#L7#战神学技#l \t #L8#整理背包#l \t \r\n";
         
         if (cm.getPlayer().getMap().getId() == '104000004' && cm.getPlayer().getJob() == 'ARAN2') {
           text += "#L4#精准矛(补偿)#l\r\n";          
@@ -109,7 +109,10 @@ function doSelect(selection) {
             cm.dispose();
             break;
 		case 7:
-            openNpc("战神学技");
+            openNpc("习得当前职业技能");
+            break;
+        case 8:
+            openNpc("清包");
             break;
         // GM功能
         case 61:

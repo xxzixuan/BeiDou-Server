@@ -20,10 +20,14 @@ function action(mode, type, selection) {
     }
 
     if (status == 0) {
+        var jobId = cm.getJobId();
+        if (!(jobId >= 2100 && jobId <= 2112)) {
+            cm.sendOk("#h #，升到10级后，再来找我吧！我将一路陪伴你，教你如何成为一位神采奕奕的战神~");
+            cm.dispose();            
+            return;
+        }
         cm.teachSkillsCurrentJob();
-        var context = "#h #，好啦，打开你的技能(k)看看吧！";
-        cm.sendSimple(context);
+        cm.sendOk("#h #，好啦，打开你的技能(k)看看吧！");
     }
     cm.dispose();
-    return;
 }
