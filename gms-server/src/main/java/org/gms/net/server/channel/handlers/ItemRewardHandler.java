@@ -29,6 +29,7 @@ import org.gms.constants.inventory.ItemConstants;
 import org.gms.net.AbstractPacketHandler;
 import org.gms.net.packet.InPacket;
 import org.gms.net.server.Server;
+import org.gms.scripting.npc.NPCScriptManager;
 import org.gms.server.ItemInformationProvider;
 import org.gms.server.ItemInformationProvider.RewardItem;
 import org.gms.util.PacketCreator;
@@ -46,6 +47,15 @@ public final class ItemRewardHandler extends AbstractPacketHandler {
     public final void handlePacket(InPacket p, Client c) {
         byte slot = (byte) p.readShort();
         int itemId = p.readInt(); // will load from xml I don't care.
+
+    	// 拍卖箱子
+    	if (itemId == 2022615) {
+            c.removeClickedNPC();
+            NPCScriptManager.getInstance().dispose(c);
+    		c.sendPacket(PacketCreator.enableActions());
+    		NPCScriptManager.getInstance().start(c, 9900001, null);
+    		return;
+    	}
 
         Item it = c.getPlayer().getInventory(InventoryType.USE).getItem(slot);   // null check here thanks to Thora
         if (it == null || it.getItemId() != itemId || c.getPlayer().getInventory(InventoryType.USE).countById(itemId) < 1) {

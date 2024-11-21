@@ -203,6 +203,7 @@ public class CommandsExecutor {
         addCommand("enableauth", EnableAuthCommand.class);
         addCommand("toggleexp", ToggleExpCommand.class);
         addCommand("mylawn", MapOwnerClaimCommand.class);
+//        addCommand("onhook", OnHookCommand.class);
 
         commandsNameDesc.add(levelCommandsCursor);
     }

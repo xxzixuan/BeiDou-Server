@@ -275,6 +275,21 @@ public class MapleMap {
         return ret;
     }
 
+    public Set<Integer> getAllUniqueMonsters() {
+    	objectRLock.lock();
+    	Set<Integer> ret = new HashSet<>();
+        try {
+            for (MapObject obj : mapobjects.values()) {
+                if (obj.getType() == MapObjectType.MONSTER) {
+                	ret.add(((Monster)obj).getId());
+                }
+            }
+        } finally {
+            objectRLock.unlock();
+        }
+        return ret;
+    }
+
     public int getId() {
         return mapid;
     }
@@ -667,7 +682,7 @@ public class MapleMap {
 
         for (final MonsterDropEntry de : dropEntry) {
             float cardRate = chr.getCardRate(de.itemId);
-            int dropChance = (int) Math.min((float) de.chance * chRate * cardRate, Integer.MAX_VALUE);
+            int dropChance = (int) Math.min(de.chance * chRate * cardRate, Integer.MAX_VALUE);
 
             if (Randomizer.nextInt(999999) < dropChance) {
                 if (droptype == 3) {

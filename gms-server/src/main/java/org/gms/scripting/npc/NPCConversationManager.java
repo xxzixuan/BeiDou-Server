@@ -22,11 +22,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package org.gms.scripting.npc;
 
 import lombok.Getter;
+
 import org.gms.client.Character;
 import org.gms.client.*;
 import org.gms.client.inventory.Item;
 import org.gms.client.inventory.ItemFactory;
 import org.gms.client.inventory.Pet;
+import org.gms.client.keybind.KeyBinding;
 import org.gms.config.GameConfig;
 import org.gms.constants.game.GameConstants;
 import org.gms.constants.game.NextLevelType;
@@ -60,6 +62,8 @@ import org.gms.server.expeditions.ExpeditionType;
 import org.gms.server.gachapon.Gachapon;
 import org.gms.server.gachapon.Gachapon.GachaponItem;
 import org.gms.server.life.LifeFactory;
+import org.gms.server.life.MonsterDropEntry;
+import org.gms.server.life.MonsterInformationProvider;
 import org.gms.server.life.PlayerNPC;
 import org.gms.server.maps.MapManager;
 import org.gms.server.maps.MapObject;
@@ -69,9 +73,16 @@ import org.gms.server.partyquest.AriantColiseum;
 import org.gms.server.partyquest.MonsterCarnival;
 import org.gms.server.partyquest.Pyramid;
 import org.gms.server.partyquest.Pyramid.PyramidMode;
+import org.gms.server.quest.Quest;
+import org.gms.util.DatabaseConnection;
+import org.gms.util.I18nUtil;
 import org.gms.util.PacketCreator;
+import org.gms.util.Pair;
 
 import java.awt.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.*;
@@ -1443,5 +1454,78 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         nextLevelContext.setLevelType(NextLevelType.SEND_YES_NO);
         nextLevelContext.setLastLevel(noLevel);
         nextLevelContext.setNextLevel(yesLevel);
+    }
+
+    public String checkDrop(int mobId) {
+        final List<MonsterDropEntry> ranks = MonsterInformationProvider.getInstance().retrieveDrop(mobId);
+        if (ranks != null && ranks.size() > 0) {
+            int num = 0, itemId = 0, ch = 0;
+            MonsterDropEntry de;
+            StringBuilder name = new StringBuilder();
+            for (int i = 0; i < ranks.size(); i++) {
+                de = ranks.get(i);
+                if (de.chance > 0 && (de.questid <= 0 || (de.questid > 0 && Quest.getInstance(de.questid).getName().length() > 0))) {
+                    itemId = de.itemId;
+                    String itemName = ItemInformationProvider.getInstance().getName(itemId);
+                    if (itemName == null || itemName.equals("null") || de.chance == 0) {
+                        continue;
+                    }
+                    if (num == 0) {
+                        name.append("当前怪物 #o" + mobId + "# 的爆率为:#\r\n");
+                        name.append("--------------------------------------\r\n");
+                    }
+                    String namez = "#z" + itemId + "#";
+                    if (itemId == 0) { //meso
+                        itemId = 4031041; //display sack of cash
+                        namez = (de.Minimum * GameConfig.getWorldFloat(i, "meso_rate") / 10) + " 到 " + (de.Maximum * GameConfig.getWorldFloat(i, "meso_rate") / 10) + " 金币";
+                    }
+                    ch = de.chance * (int) GameConfig.getWorldFloat(i, "drop_rate");
+                    name.append((num + 1) + ") #v" + itemId + "#" + namez /*+ " - " + (Integer.valueOf(ch >= 999999 ? 1000000 : ch).doubleValue() / 10000.0) + "% 爆率. "*/ + (de.questid > 0 && Quest.getInstance(de.questid).getName().length() > 0 ? ("需要接受任务 " + Quest.getInstance(de.questid).getName() + "") : "") + "\r\n");
+                    num++;
+                }
+            }
+            if (name.length() > 0) {
+                return name.toString();
+            }
+
+        }
+        return "该怪物查无任何爆率数据。";
+    }
+
+    public String whoDrops(String itemName) {
+        StringBuilder output = new StringBuilder();
+        Iterator<Pair<Integer, String>> listIterator = ItemInformationProvider.getInstance().getItemDataByName(itemName).iterator();
+        if (!listIterator.hasNext()) {
+        	return I18nUtil.getMessage("WhoDropsCommand.message5");
+        }
+        int count = 1;
+        while (listIterator.hasNext() && count <= 3) {
+            Pair<Integer, String> data = listIterator.next();
+            output.append("#b").append(data.getRight()).append("#k ").append(I18nUtil.getMessage("WhoDropsCommand.message3")).append("\r\n");
+            try (Connection con = DatabaseConnection.getConnection();
+                 PreparedStatement ps = con.prepareStatement("SELECT dropperid FROM drop_data WHERE itemid = ? LIMIT 50")) {
+                ps.setInt(1, data.getLeft());
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        String resultName = MonsterInformationProvider.getInstance().getMobNameFromId(rs.getInt("dropperid"));
+                        if (resultName != null) {
+                            output.append(resultName).append(", ");
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return I18nUtil.getMessage("WhoDropsCommand.message4");
+            }
+            output.append("\r\n\r\n");
+            count++;
+        }
+        return output.toString();
+    }
+
+    public void putKey(int key, int type, int action) {
+        getPlayer().changeKeybinding(key, new KeyBinding(type, action));
+        getPlayer().sendKeymap();
     }
 }
