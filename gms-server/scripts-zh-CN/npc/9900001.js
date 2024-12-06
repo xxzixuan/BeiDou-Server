@@ -57,12 +57,12 @@ function action(mode, type, selection) {
         text += "\t点券：" + cm.getPlayer().getCashShop().getCash(1) + "\r\n";
         text += "抵用券：" + cm.getPlayer().getCashShop().getCash(2) + "\r\n";
         text += "信用券：" + cm.getPlayer().getCashShop().getCash(4) + "\r\n";
-        text += " \r\n\r\n";
+        text += " \r\n";
         text += "#L0#萌新福利#l \t #L1#每日签到#l \t #L2#在线奖励#l\r\n";
         text += "#L3#鹅鹅打车#l \t #L5#自由市场#l \t #L6#附近村落#l\r\n";
 		text += "#L7#战神学技#l \t #L8#整理背包#l \t #L9#呆呆鹅#l\r\n";
         text += "#L10#小商小贩#l\t #L11#怪物爆率#l\t #L12#掉落查询#l\r\n";
-        text += "#L13#我的仓库#l\t \r\n";
+        text += "#L13#我的仓库#l\t #L14#三只宠物#l\t \r\n";
         
         if (cm.getPlayer().getMap().getId() == '104000004' && cm.getPlayer().getJob() == 'ARAN2') {
           text += "#L4#精准矛(补偿)#l\r\n";          
@@ -131,6 +131,16 @@ function doSelect(selection) {
         case 13:
             cm.dispose();
             cm.openNpc(9030100);
+        case 14:
+            if (!cm.haveItem(5460000)) {
+              cm.sendOk("带一个宠物点心，再来找我！");
+              cm.dispose();
+              break;
+            }
+            cm.gainItem(5460000, -1);
+            cm.teachSkill(8, 1, 1, -1);
+            cm.sendOk("怎么样？带三只宠物是不是很炫酷？。");
+            cm.dispose();
             break;
         // GM功能
         case 61:

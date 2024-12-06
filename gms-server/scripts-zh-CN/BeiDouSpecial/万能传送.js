@@ -46,7 +46,7 @@ var monstermaps = Array(
 var townmaps = Array(
 		//Array(910000000,520,"自由市场#r             （消耗520金币）#b"), 
 		//Array(701000210,0,"大擂台"), 
-		//Array(1000000,100,"彩虹岛新手村#r         （消耗1百金币）#b"), 
+		Array(1000000,100,"彩虹岛新手村#r         （消耗1百金币）#b"), 
 		Array(104000000,500,"明珠港#r               （消耗5百金币）#b"), 
 		Array(100000000,800,"射手村#r               （消耗8百金币）#b"), 
 		Array(101000000,800,"魔法密林#r             （消耗8百金币）#b"), 
@@ -120,10 +120,10 @@ function start()
  * @description 如果是sendSelectLevel，那么会根据玩家的选项自动路由到对应的level+selection方法
  */
 function levelStart() {
-    let text = "你好 "+ cm.getName() +"！你想去哪里呢？\r\n";
-    text += "#L0#BOSS地图#l\r\n";
-    text += "#L1#练级地图#l\r\n";
-    text += "#L2#城镇地图#l\r\n";
+    let text = "你好 "+ cm.getName() +"！你想去哪里呢？\r\n";    
+    text += "#L2#城镇村落#l\r\n";
+    text += "#L1#打怪练级#l\r\n";
+    text += "#L0#BOSS王城#l\r\n";
     text += "#L3#活动跳跳坐牢地图#l\r\n";
     cm.sendSelectLevel(text);
 }

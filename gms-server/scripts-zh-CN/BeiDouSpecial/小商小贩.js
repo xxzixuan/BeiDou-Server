@@ -25,7 +25,6 @@ function action(mode, type, selection) {
         selStr+="#L0#"+coin+"药水商店"+"#l\r\n\#L1#"+coin+"杂货商店"+"#l\r\n"; 
         cm.sendSimple(selStr);
     } else if (status == 1) {
-        cm.message("dsfsfd");
         switch (selection) {
             case 0:
                 cm.dispose();
