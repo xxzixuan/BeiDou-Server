@@ -24,7 +24,6 @@
  * @description 拍卖行中心脚本
  */
 var LifeFactory = Java.type('org.gms.server.life.LifeFactory');
-
 var BeiDouUI ="#fMap/MapHelper.img/BeiDou/logo#";
 var BlueShine = "#fUI/GuildMark.img/Mark/Pattern/00004001/10#";
 var OldTitle ="\t\t\t\t\t\t\t欢迎来到呆呆鹅冒险岛#n\t\t\t\t\r\n";
@@ -45,14 +44,6 @@ function action(mode, type, selection) {
     }
 
     if (status === 0) {
-		//var TextTitle = BlueShine;
-		//for (i =0;i < 5; i++) 
-		//TextTitle += BlueShine; 
-        //let text = TextTitle + BeiDouUI + TextTitle + "\r\n";
-		//text +=BlueShine + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + BlueShine + "\r\n";
-        //text +=BlueShine + "\t\t\t\t\t#e欢迎来到#rBeiDou#k脚本中心#n\t\t\t\t" + BlueShine + "\r\n";
-		//text +=BlueShine + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t" + BlueShine + "\r\n";
-		//text +=BlueShine + TextTitle + TextTitle + TextTitle + "\r\n\r\n";
 		let text = OldTitle;
         text += "\t点券：" + cm.getPlayer().getCashShop().getCash(1) + "\r\n";
         text += "抵用券：" + cm.getPlayer().getCashShop().getCash(2) + "\r\n";
@@ -67,7 +58,6 @@ function action(mode, type, selection) {
         if (cm.getPlayer().getMap().getId() == '104000004' && cm.getPlayer().getJob() == 'ARAN2') {
           text += "#L4#精准矛(补偿)#l\r\n";          
         }
-        
         if (cm.getPlayer().isGM()) {
             text += "\r\n\r\n";
             text += "\t\t\t\t#r=====以下内容仅GM可见=====\r\n";
@@ -142,15 +132,16 @@ function doSelect(selection) {
             cm.sendOk("怎么样？带三只宠物是不是很炫酷？。");
             cm.dispose();
             break;
+        case 4:
+            openNpc("当前地图掉落");
+            break;
         // GM功能
         case 61:
             openNpc("万能传送");
-            //cm.sendOk("该功能暂不支持，敬请期待！");
-            //cm.dispose();
             break;
         case 62:
-            // openNpc("SuperShop");
-            cm.sendOk("该功能暂不支持，敬请期待！");
+            cm.dispose();
+            cm.openShopNPC(9900001);
             cm.dispose();
             break;
         case 63:
