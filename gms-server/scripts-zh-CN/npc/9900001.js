@@ -139,6 +139,8 @@ function doSelect(selection) {
               break;
             }
             cm.gainItem(5460000, -1);
+            cm.teachSkill(8, 1, 1, -1);
+            cm.teachSkill(10000018, 1, 1, -1);
             cm.teachSkill(20000024, 1, 1, -1);
             cm.sendOk("怎么样？带三只宠物是不是很炫酷？。");
             cm.dispose();

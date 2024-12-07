@@ -373,7 +373,7 @@ public class ItemInformationProvider {
                 } else if (inventoryType.canChangeSlotMax() && itemSlotMax > 0) {
                     ret = itemSlotMax;
                 } else {
-                    ret = 100;
+                    ret = 999;
                 }
             } else {
                 ret = inventoryType.canChangeSlotMax() && itemSlotMax > 0 ? itemSlotMax : (short) DataTool.getInt(smEntry);
@@ -1067,7 +1067,7 @@ public class ItemInformationProvider {
             Map<String, Integer> stats = this.getEquipStats(scrollId);
 
             if (((nEquip.getUpgradeSlots() > 0 || ItemConstants.isCleanSlate(scrollId))) || assertGM) {
-                double prop = (double) stats.get("success");
+                double prop = stats.get("success");
 
                 switch (vegaItemId) {
                     case ItemId.VEGAS_SPELL_10:
