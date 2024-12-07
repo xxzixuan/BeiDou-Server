@@ -67,7 +67,7 @@ function action(mode, type, selection) {
 		} else if (xx == 2) {
 			cm.gainItem(5460000, -1);
 			cm.gainItem(4031922, -8);
-			cm.teachSkill(8, 1, 1, -1);
+			cm.teachSkill(20000024, 1, 1, -1);
 			cm.sendOk("怎么样？带三只宠物是不是很炫酷？。");
 			cm.dispose();
 		}
