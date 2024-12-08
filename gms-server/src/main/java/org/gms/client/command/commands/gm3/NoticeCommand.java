@@ -27,8 +27,8 @@ import org.gms.client.Character;
 import org.gms.client.Client;
 import org.gms.client.command.Command;
 import org.gms.net.server.Server;
+import org.gms.net.server.channel.Channel;
 import org.gms.util.I18nUtil;
-import org.gms.util.PacketCreator;
 
 public class NoticeCommand extends Command {
     {
@@ -37,7 +37,14 @@ public class NoticeCommand extends Command {
 
     @Override
     public void execute(Client c, String[] params) {
-        Character player = c.getPlayer();
-        Server.getInstance().broadcastMessage(c.getWorld(), PacketCreator.serverNotice(6, I18nUtil.getMessage("NoticeCommand.message2", player.getLastCommandMessage())));
+
+    	Character player = c.getPlayer();
+    	for (Channel ch : Server.getInstance().getAllChannels()) {
+            for (Character mch : ch.getPlayerStorage().getAllCharacters()) {
+                mch.startMapEffect(player.getLastCommandMessage(), 5121015); // 5121009
+            }
+        }
+
+//    	Server.getInstance().broadcastMessage(c.getWorld(), PacketCreator.serverNotice(6, I18nUtil.getMessage("NoticeCommand.message2", player.getLastCommandMessage())));
     }
 }
