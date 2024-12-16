@@ -373,7 +373,7 @@ public class ItemInformationProvider {
                 } else if (inventoryType.canChangeSlotMax() && itemSlotMax > 0) {
                     ret = itemSlotMax;
                 } else {
-                    ret = 999;
+                    ret = 9999;
                 }
             } else {
                 ret = inventoryType.canChangeSlotMax() && itemSlotMax > 0 ? itemSlotMax : (short) DataTool.getInt(smEntry);

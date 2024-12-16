@@ -21,9 +21,13 @@
 */
 package org.gms.net.server.channel.handlers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.gms.client.Character;
 import org.gms.client.Client;
 import org.gms.client.Disease;
+import org.gms.client.Stat;
 import org.gms.client.inventory.InventoryType;
 import org.gms.client.inventory.Item;
 import org.gms.client.inventory.manipulator.InventoryManipulator;
@@ -36,8 +40,11 @@ import org.gms.server.ItemInformationProvider;
 import org.gms.server.StatEffect;
 import org.gms.util.I18nUtil;
 import org.gms.util.PacketCreator;
+import org.gms.util.Pair;
+import org.gms.util.Randomizer;
 
 /**
+ * 使用消耗品
  * @author Matze
  */
 public final class UseItemHandler extends AbstractPacketHandler {
@@ -98,7 +105,8 @@ public final class UseItemHandler extends AbstractPacketHandler {
             remove(c, slot);
 
             if (toUse.getItemId() != ItemId.HAPPY_BIRTHDAY) {
-                ii.getItemEffect(toUse.getItemId()).applyTo(chr);
+            	addMaxHp(itemId, chr, c);  // 喝“百事可乐”随机提高角色最大血量
+                ii.getItemEffect(toUse.getItemId()).applyTo(chr);  // 使用消耗品
             } else {
                 StatEffect mse = ii.getItemEffect(toUse.getItemId());
                 for (Character player : chr.getMap().getCharacters()) {
@@ -111,5 +119,24 @@ public final class UseItemHandler extends AbstractPacketHandler {
     private void remove(Client c, short slot) {
         InventoryManipulator.removeFromSlot(c, InventoryType.USE, slot, (short) 1, false);
         c.sendPacket(PacketCreator.enableActions());
+    }
+
+    /**
+     * 喝“百事可乐”随机提高角色最大血量
+     * @param itemId
+     * @param chr
+     * @param c
+     */
+    private void addMaxHp(int itemId, Character chr, Client c) {
+        if (itemId == 2022035) {
+        	List<Pair<Stat, Integer>> statupdate = new ArrayList<Pair<Stat,Integer>>();
+            InventoryManipulator.removeById(c, ItemConstants.getInventoryType(itemId), itemId, 1, false, false);
+            int hp = Randomizer.rand(3, 10);
+            chr.setMaxHp(chr.getMaxHp() + hp);
+            Pair<Stat, Integer> maxHpPair = new Pair<>(Stat.MAXHP, chr.getMaxHp());
+            statupdate.add(maxHpPair);
+            chr.sendPacket(PacketCreator.updatePlayerStats(statupdate, true, chr));
+            chr.dropMessage(5, "成功增加最大血量" + hp + "点");
+        }
     }
 }

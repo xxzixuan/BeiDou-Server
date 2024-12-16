@@ -258,7 +258,7 @@ public abstract class AbstractCharacterObject extends AbstractAnimatedMapObject 
         this.remainingSp[skillbook] = remainingSp;
     }
 
-    protected void setMaxHp(int hp_) {
+    public void setMaxHp(int hp_) {  // 开放喝“百事可乐”随机提高角色最大血量（由 protected 改成 public）
         if (this.maxHp < hp_) {
             this.transientHp = Float.NEGATIVE_INFINITY;
         }
