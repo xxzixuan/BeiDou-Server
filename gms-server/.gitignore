@@ -5,3 +5,4 @@ logs
 docker-db-data
 .idea
 /.settings/
+*.jar
