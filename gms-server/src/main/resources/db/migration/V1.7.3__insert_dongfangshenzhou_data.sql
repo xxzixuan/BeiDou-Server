@@ -277,7 +277,7 @@ WHERE dropperid IN (9600002, 9600003, 9600004, 9600005, 9600006, 9600007, 960000
   AND itemid = 0;
 
 -- 怪物物品爆率
-INSERT INTO `drop_data` (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`) VALUES
+REPLACE INTO `drop_data` (`dropperid`, `itemid`, `minimum_quantity`, `maximum_quantity`, `questid`, `chance`) VALUES
 (9600001,2000001,1,1,0,800),
 (9600001,2000003,1,1,0,800),
 (9600001,4003004,1,1,0,800),
