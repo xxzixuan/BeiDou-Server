@@ -64,15 +64,31 @@ public class AccountService {
                                            String createdAtStart,
                                            String createdAtEnd) {
         QueryWrapper queryWrapper = new QueryWrapper();
-        if (id != null) queryWrapper.eq("id", id);
-        if (name != null) queryWrapper.like("name", name);
-        if (lastLoginStart != null) queryWrapper.ge(AccountsDO::getLastlogin, lastLoginStart);
-        if (lastLoginEnd != null) queryWrapper.le(AccountsDO::getLastlogin, lastLoginEnd);
-        if (createdAtStart != null) queryWrapper.ge(AccountsDO::getCreatedat, createdAtStart);
-        if (createdAtEnd != null) queryWrapper.le(AccountsDO::getCreatedat, createdAtEnd);
+        if (id != null) {
+			queryWrapper.eq("id", id);
+		}
+        if (name != null) {
+			queryWrapper.like("name", name);
+		}
+        if (lastLoginStart != null) {
+			queryWrapper.ge(AccountsDO::getLastlogin, lastLoginStart);
+		}
+        if (lastLoginEnd != null) {
+			queryWrapper.le(AccountsDO::getLastlogin, lastLoginEnd);
+		}
+        if (createdAtStart != null) {
+			queryWrapper.ge(AccountsDO::getCreatedat, createdAtStart);
+		}
+        if (createdAtEnd != null) {
+			queryWrapper.le(AccountsDO::getCreatedat, createdAtEnd);
+		}
 
-        if (page == null) page = 1;
-        if (size == null) size = Integer.MAX_VALUE;
+        if (page == null) {
+			page = 1;
+		}
+        if (size == null) {
+			size = Integer.MAX_VALUE;
+		}
         return accountsMapper.paginateWithRelations(page, size, queryWrapper);
     }
 
@@ -182,6 +198,7 @@ public class AccountService {
         accountsMapper.update(account);
     }
 
+    // TODO 这里如果ban一个账号会导致所有人登录不了 (见 CharSelectedHandler 的 c.hasBannedMac())
     public void banAccount(int accountId, String reason) {
         RequireUtil.requireNotNull(findById(accountId), I18nUtil.getExceptionMessage("AccountService.id.NotExist"));
 
@@ -199,7 +216,10 @@ public class AccountService {
                     .get(chr.getWorld())
                     .getPlayerStorage()
                     .getCharacterById(chr.getId());
-            if (player == null) return; // 角色离线
+            if (player == null)
+			 {
+				return; // 角色离线
+			}
             player.setBanned(true);
             Client c = player.getClient(); // 角色在线，获取客户端
             c.banMacs(); // 封禁Mac

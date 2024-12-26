@@ -36,6 +36,11 @@ import org.gms.util.PacketCreator;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+/**
+ * 选择角色进入游戏会调 handlePacket 方法来处理
+ *
+ * @author xxzixuan@outlook.com
+ */
 public final class CharSelectedHandler extends AbstractPacketHandler {
     private static final Logger log = LoggerFactory.getLogger(CharSelectedHandler.class);
 
