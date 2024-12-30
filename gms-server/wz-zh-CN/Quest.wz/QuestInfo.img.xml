@@ -15094,7 +15094,7 @@
         <string name="2" value="得到#b#t4000465##k后, 大家都觉得清凉多了~!"/>
         <int name="area" value="49"/>
         <string name="demandSummary" value="#i4000465:# #t4000465:# #c4000465# / 50"/>
-        <string name="rewardSummary" value="经验值：10,000\r\n金币：3,000\r\n解锁任务：好热！"/>
+        <string name="rewardSummary" value="经验值：1,000\r\n金币：3,000\r\n解锁任务：好热！"/>
     </imgdir>
     <imgdir name="4542">
         <string name="name" value="好热!"/>
@@ -15105,7 +15105,7 @@
         <string name="2" value="有了椰汁~大家都清凉多了! 这真是他们所需要的东西.."/>
         <int name="area" value="49"/>
         <string name="demandSummary" value="#i4000465:# #t4000465:# #c4000465# / 100"/>
-        <string name="rewardSummary" value="经验值：20,000\r\n金币：5,000\r\n解锁任务：好无聊！"/>
+        <string name="rewardSummary" value="经验值：2,000\r\n金币：5,000\r\n解锁任务：好无聊！"/>
     </imgdir>
     <imgdir name="4543">
         <string name="name" value="好无聊!"/>
@@ -15116,7 +15116,7 @@
         <string name="2" value="现在的甘榜村, 是个充满希望,快乐与幸福的#b#t4000466##k旋律~"/>
         <int name="area" value="49"/>
         <string name="demandSummary" value="#i4000466:# #t4000466:# #c4000466# / 100"/>
-        <string name="rewardSummary" value="经验值：30,000\r\n金币：8,000\r\n解锁任务：全都拿走！"/>
+        <string name="rewardSummary" value="经验值：3,000\r\n金币：8,000\r\n解锁任务：全都拿走！"/>
     </imgdir>
     <imgdir name="4544">
         <string name="name" value="全都拿走!"/>
@@ -19273,7 +19273,7 @@
         <string name="parent" value="Beat the Heat &lt;Easy&gt;"/>
         <int name="order" value="1"/>
         <string name="0" value="Maple Administrator has come up with an event for the summer. Where must the admin be??"/>
-        <string name="1" value="As summer rolls on, The Maple Adminstrator has prepared an event called &apos;Beat the Heat&apos; for the health of the users, most of which would be in front of the air-conditioner or a fan. As a warm up, the administrator requested that I defeat #b50 #o130101#s#k and #b20 #o1210102#s#k... sounds like fun.\n\n#o130101# #r#a90512##k\n#o1210102# #r#a90511#"/>
+        <string name="1" value="As summer rolls on, The Maple Adminstrator has prepared an event called &amp;apos;Beat the Heat&amp;apos; for the health of the users, most of which would be in front of the air-conditioner or a fan. As a warm up, the administrator requested that I defeat #b50 #o130101#s#k and #b20 #o1210102#s#k... sounds like fun.\n\n#o130101# #r#a90512##k\n#o1210102# #r#a90511#"/>
         <string name="2" value="I met the Maple Administrator, and passed the 1st Stage of the Easy level of #bBeat the Heat#k."/>
         <int name="area" value="50"/>
     </imgdir>
